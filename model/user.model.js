@@ -1,33 +1,33 @@
-const mongoose = require('mongoose') 
+const mongoose = require('mongoose')
 
 const userScehama = new mongoose.Schema({
-    fullname:{
-        type:String,
-        require:true
+    fullname: {
+        type: String,
+        require: true
     },
-    email:{
-        type:String,
-        require:true
+    email: {
+        type: String,
+        require: true
     },
-    number:{
-        type:Number,
-        require:true
+    number: {
+        type: Number,
+        require: true
     },
     status: {
         type: String,
-        enum : ['unverify','active','block'],
+        enum: ['unverify', 'active', 'block'],
         default: 'unverify'
     },
-    gender:{
-        type:String,
-        require:true
+    gender: {
+        type: String,
+        require: true
     },
-    city_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"city"
+    city_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "city"
     }
-},{timestamps:true})
-const user = mongoose.model('user',userScehama);
+}, { timestamps: true })
+const user = mongoose.model('user', userScehama);
 module.exports = user
 
 

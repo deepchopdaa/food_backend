@@ -22,9 +22,13 @@ const userScehama = new mongoose.Schema({
         type: String,
         require: true
     },
-    city_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "city"
+    password:{
+        type:String,
+        require:true
+    },
+    city_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"city"
     }
 }, { timestamps: true })
 const user = mongoose.model('user', userScehama);

@@ -34,4 +34,3 @@ const userScehama = new mongoose.Schema({
 const user = mongoose.model('user',userScehama);
 module.exports = user
 
-

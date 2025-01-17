@@ -66,7 +66,7 @@ app.post("/insert", async (req, res) => {
         } else {
             users.create(req.body).then((data) => {
                 res.status(201).send(data)
-            }).catch((err) => {
+            }).catch((err) => { 
                 console.log(err);
                 res.status(500).send(`error ${err}`)
             })

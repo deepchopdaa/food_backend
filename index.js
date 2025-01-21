@@ -140,9 +140,8 @@ app.delete("/deleterestrurent/:id", async (req, res) => {
 app.get("/getcategory", async (req, res) => {
     let data = await category.find();
     res.send(data);
-    console.log(data)
+    console.log(data);
 })
-
 
 app.post("/addcategory", async (req, res) => {
     let { category_name, status } = req.body;

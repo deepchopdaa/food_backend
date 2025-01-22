@@ -12,10 +12,18 @@ const restrorentSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    /* city_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'city'
-    } */
+    country_name: {
+        type:String,
+        require:true
+    },
+    state_name: {
+        type:String,
+        require:true
+    },
+    city_name: {
+        type:String,
+        require:true
+    }
 }, { timestamps: true })
 const restaurants = mongoose.model('restaurant', restrorentSchema)
 module.exports = restaurants

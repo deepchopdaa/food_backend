@@ -4,12 +4,8 @@ const citySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'state'
     },
-    ciy_name: {
+    city_name: {
         type: String,
-        require: true
-    },
-    pincode: {
-        type: Number,
         require: true
     }
 }, { timestamps: true })

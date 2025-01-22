@@ -9,6 +9,9 @@ const users = require('./model/user.model.js')
 const restrurent = require('./model/admin/restrorent.js');
 const category = require('./model/admin/category.js')
 const foodItem = require('./model/admin/foodItem.js')
+const country = require('./model/admin/country.js')
+const state = require('./model/admin/state.js')
+const city = require('./model/admin/city.js')
 /* models */
 const app = express();
 app.use(express.json());
@@ -90,13 +93,59 @@ app.post("/insert", async (req, res) => {
 /* login register with token end */
 
 
+/* location of restaurent */
+app.post("/country", async (req, res) => {
+    let data = await country.create(req.body);
+    console.log(data)
+    res.send(data)
+})
+app.post("/state", async (req, res) => {
+    let data = await state.create(req.body);
+    console.log(data)
+    res.send(data)
+})
+app.post("/city", async (req, res) => {
+    let data = await city.create(req.body);
+    console.log(data)
+    res.send(data)
+})
+
+app.get('/cities/:stateId', async (req, res) => {
+    try {
+        const cities = await city.find({
+            state_id: req.params.stateId
+        });
+        res.json(cities);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch cities' });
+    }
+});
+app.get('/states/:countryId', async (req, res) => {
+    try {
+        const states = await state.find({
+            country_id
+                : req.params.countryId
+        });
+        res.json(states);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch states' });
+    }
+});
+app.get("/countryget", async (req, res) => {
+    let data = await country.find();
+    res.send(data);
+    console.log(data)
+})
+
+
+/* location of restaurent end */
 
 /* Admin restrurent curd start */
 
 app.post("/addrestrurent", async (req, res) => {
     let { name, address, area } = req.body;
-    if (name && address && area) {
-        let data = await restrurent.create({ name, address, area });
+    if (name && address && area && country_name && state_name && city_name) {
+        let data = await restrurent.create({ name, address, area ,country_name ,state_name ,city_name });
         console.log(data)
         res.send(data)
     } else {
@@ -146,7 +195,7 @@ app.get("/getcategory", async (req, res) => {
 app.post("/addcategory", async (req, res) => {
     let { category_name, status } = req.body;
     if (category_name) {
-        let data = await category.create({category_name,status});
+        let data = await category.create({ category_name, status });
         console.log(data);
         res.send(data);
     } else {

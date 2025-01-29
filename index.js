@@ -21,29 +21,29 @@ const secrate_key = "secratekey";
 
 /* login register with token  start */
 function verifytoken(req, res, next) {
-    const bearerHeader = req.headers['authorization']
-    console.log(bearerHeader, "yhgfuyg")
+    const bearerHeader = req.headers.authorization
+    console.log(req.headers,"req.headersreq.headers")
+    console.log(bearerHeader,"bearerHeaderbearerHeader")
+    console.log(bearerHeader, "bearer header")
     if (typeof bearerHeader !== 'undefined') {
         const bearer = bearerHeader.split(" ");
         console.log(bearer)
         const token = bearer[1];
-        req.token = token;
+        jwt.verify(token, secrate_key, (err, authData) => {
+            if (err) {
+                res.send({ result: "Unauthorize user" })
+            } else {
+              req.user = authData
+              next();
+
+            }
+        })
     } else {
         res.send({
             result: "token is unvalid"
         })
     };
-    jwt.verify(req.token, secrate_key, (err, authData) => {
-        if (err) {
-            res.send({ result: "Unauthorize user" })
-        } else {
-            res.json({
-                message: 'profile accesed',
-                authData
-            })
-        }
-    })
-    next();
+   
 }
 app.post('/profile', verifytoken, (req, res) => {
     console.log("porfile accesed")
@@ -114,7 +114,7 @@ app.get('/cities/:stateId', async (req, res) => {
     try {
         const cities = await city.find({
             state_id: req.params.stateId
-        });
+        }); 
         res.json(cities);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch cities' });
@@ -132,20 +132,20 @@ app.get('/states/:countryId', async (req, res) => {
     }
 });
 app.get("/countryget", async (req, res) => {
+    console.log("dsdds")
     let data = await country.find();
     res.send(data);
     console.log(data)
 })
 
-
 /* location of restaurent end */
 
 /* Admin restrurent curd start */
 
-app.post("/addrestrurent", async (req, res) => {
-    let { name, address, area } = req.body;
+app.post("/addrestrurent" ,async (req, res) => {
+    let { name, address, area, country_name, state_name, city_name } = req.body;
     if (name && address && area && country_name && state_name && city_name) {
-        let data = await restrurent.create({ name, address, area ,country_name ,state_name ,city_name });
+        let data = await restrurent.create({ name, address, area, country_name, state_name, city_name });
         console.log(data)
         res.send(data)
     } else {
@@ -154,20 +154,20 @@ app.post("/addrestrurent", async (req, res) => {
     }
 })
 
-app.get("/getrestrurent", async (req, res) => {
+app.get("/getrestrurent",verifytoken,async (req, res) => {
     let data = await restrurent.find();
     console.log(data);
-    res.send(data)
+    res.send(data)  
 })
 
 app.put("/updaterestrurent/:id", async (req, res) => {
     let id = req.params.id;
-    let { name, address, area } = req.body;
-    if (name && address && area) {
-        let data = await restrurent.findByIdAndUpdate(id, { name, address, area }, { new: true });
+    let { name, address, area, country_name, state_name, city_name } = req.body;
+    if (name && address && area && country_name && state_name && city_name) {
+        let data = await restrurent.findByIdAndUpdate(id, { name, address, area, country_name, state_name, city_name }, { new: true });
         console.log(data);
         res.send(data);
-    } else {
+    } else {    
         res.send("enter all required feild")
         console.log("enter all required feild")
     }
